@@ -1,0 +1,41 @@
+.containerTable {
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 100%;
+  margin: 0 auto;
+  background-color: #ebebeb;
+  color: black;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  th,
+  td {
+    padding: 10px 50px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+    font-size: 36px;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+
+  th:nth-child(1),
+  td:nth-child(1) {
+    width: 10%;
+  }
+
+  th:nth-child(2),
+  td:nth-child(2) {
+    width: 45%;
+  }
+
+  th:nth-child(3),
+  td:nth-child(3),
+  th:nth-child(4),
+  td:nth-child(4) {
+    width: 20%;
+  }
+}

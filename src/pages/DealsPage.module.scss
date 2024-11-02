@@ -1,0 +1,17 @@
+.containerDeals {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  padding: 2rem 1rem;
+  margin: 0;
+}
+
+.buttonCreateDeal {
+  width: 370px !important;
+}
+
+.navButton {
+  display: flex;
+  margin: 1rem 0;
+}
