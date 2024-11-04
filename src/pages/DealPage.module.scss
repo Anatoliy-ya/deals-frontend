@@ -1,0 +1,50 @@
+.containerDeal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+  margin: 2rem;
+  height: 100%;
+  position: relative;
+}
+
+.title {
+  color: black;
+  font-size: 36px;
+  font-weight: 400;
+}
+
+.containerStatus {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.containerData {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 4rem;
+}
+
+.modifyDeal {
+  width: 570px;
+  flex-shrink: 0; /* Чтобы элемент не сжимался */
+}
+
+.commentDeal {
+  flex-grow: 1; /* Заполняет оставшееся пространство */
+}
+
+.containerCommentButton {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  bottom: 10px;
+  left: 30%;
+
+  &.hidden {
+    display: none;
+  }
+}

@@ -19,20 +19,54 @@ export const fetchDealById = async (id: number) => {
   return response.data;
 };
 
-export const createDeal = async (deal: { title: string; status: string }) => {
+export const createDeal = async (deal: {
+  title: string;
+  status: string;
+  createdAt: Date;
+}) => {
   const response = await apiClient.post('/deals', deal);
-  console.log(response.data);
+  console.log('createDeal', response.data);
   return response.data;
 };
 
-export const updateDeal = async (id: number, deal: { title: string; status: string }) => {
-  const response = await apiClient.put(`/deals/${id}`, deal);
-  console.log(response.data);
+export const updateDeal = async (
+  id: number,
+  deal: {
+    title: string;
+    status: string;
+    createdAt: Date;
+    numberPhone: string;
+    budget: number;
+    fullName: string;
+  }
+) => {
+  console.log('Data before sending to API:', deal);
+  const response = await apiClient.put(`/deals/${id}`, deal, {
+    headers: {
+      'Cache-Control': 'no-cache',
+      Pragma: 'no-cache',
+    },
+  });
+  console.log('updateDeal', response.data);
   return response.data;
 };
 
 export const deleteDeal = async (id: number) => {
   const response = await apiClient.delete(`/deals/${id}`);
+  console.log(response.data);
+  return response.data;
+};
+
+export const addComment = async (dealId: number, content: string) => {
+  const response = await apiClient.post(`/deals/${dealId}/comments`, {
+    content,
+  });
+  console.log('addComment', response.data);
+  return response.data;
+};
+
+export const fetchCommentsByDealId = async (dealId: number) => {
+  const response = await apiClient.get(`/deals/${dealId}/comments`);
   console.log(response.data);
   return response.data;
 };

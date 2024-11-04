@@ -1,4 +1,11 @@
 import { RootState } from '../../store/store';
 
-export const selectCompletedDeals = (state: RootState) =>
-  state.deals.deals.filter((deal) => deal.status === 'SUCCESSFUL' || deal.status === 'FAILED');
+import { createSelector } from '@reduxjs/toolkit';
+
+const selectDeals = (state: RootState) => state.deals;
+
+export const selectCompletedDeals = createSelector([selectDeals], (deals) =>
+  deals.deals.filter(
+    (deal) => deal.status === 'Успешно' || deal.status === 'Провал'
+  )
+);

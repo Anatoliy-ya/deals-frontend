@@ -1,7 +1,9 @@
-export const formatDate = (date: Date): string => {
-  const day = String(date.getDate()).padStart(2, '0');
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const year = date.getFullYear();
+import moment from 'moment';
 
-  return `${day}.${month}.${year}`;
+export const formatDateString = (dateString: string): string => {
+  return moment(dateString).format('DD.MM.YYYY');
+};
+
+export const isISODate = (dateString: string) => {
+  return moment(dateString, moment.ISO_8601, true).isValid();
 };

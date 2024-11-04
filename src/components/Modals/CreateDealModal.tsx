@@ -4,26 +4,31 @@ import Input from '../UI/Input';
 import { useState } from 'react';
 import { useAppDispatch } from '../../store/hooks';
 import { closeModal } from '../../store/slices/uiSlice';
+import { StatusKey } from '../../types/types';
 
 interface CreateDealModalProps {
-  handleCreateDeal: (title: string) => void;
+  handleCreateDeal: (
+    title: string,
+    statusDisplay: StatusKey,
+    createdAt: Date
+  ) => void;
 }
 
 const CreateDealModal: React.FC<CreateDealModalProps> = (props) => {
   const dispatch = useAppDispatch();
   const [title, setTitle] = useState('');
   const [hasError, setHasError] = useState(false);
-
+  console.log('error', hasError);
   const handleChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
     if (e.target.value.trim()) {
-      setHasError(false); // Убираем ошибку, если текст введен
+      setHasError(false); // Убирает ошибку, если текст введен
     }
   };
 
   const handleCreateDeal = () => {
-    props.handleCreateDeal(title);
-    setHasError(false); // Сбрасываем ошибку, если значение введено
+    props.handleCreateDeal(title, 'Новый', new Date());
+    setHasError(false); // Сбрасывает ошибку, если значение введено
   };
 
   const handleCloseModal = () => {
@@ -33,7 +38,8 @@ const CreateDealModal: React.FC<CreateDealModalProps> = (props) => {
 
   const handleInputBlur = () => {
     if (!title.trim()) {
-      setHasError(true); // Устанавливаем ошибку, если поле пустое после потери фокуса
+      console.log('blur');
+      setHasError(true); // Устанавливает ошибку, если поле пустое после потери фокуса
     }
   };
 
@@ -50,6 +56,7 @@ const CreateDealModal: React.FC<CreateDealModalProps> = (props) => {
           type="text"
           error={hasError}
           onBlur={handleInputBlur}
+          controlled={true}
         />
         <div className={styles.buttons}>
           <Button onClick={handleCreateDeal} select={false} disabled={hasError}>

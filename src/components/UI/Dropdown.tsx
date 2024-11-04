@@ -1,31 +1,30 @@
 import { useEffect, useState } from 'react';
 import Button from './Button';
-import styles from './Input.module.scss';
+import styles from './Dropdown.module.scss';
 
-interface InputProps {
+type DropdownProps = {
   id: string;
-  placeholder: string;
-  label: string;
-  value: string | number;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type: string;
-  error?: boolean;
-  onBlur?: () => void;
   className?: string;
-  disabled?: boolean;
-  onFocus?: () => void;
+  placeholder: string;
+  value: string;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  label: string;
   addChangeButton?: boolean;
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   buttonClassName?: string;
+  disabled?: boolean;
   isEdit?: boolean;
   saveEditing?: boolean;
-  controlled?: boolean; // Новый проп для управления режимом
-}
+  controlled?: boolean;
+};
 
-const Input: React.FC<InputProps> = (props) => {
+const Dropdown: React.FC<DropdownProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [tempValue, setTempValue] = useState(props.value);
-  const classInput = `${styles.containerInput} ${props.className}`;
+  const classInput = `${styles.containerDropdown} ${props.className}`.trim();
+
+  useEffect(() => {
+    setTempValue(props.value);
+  }, [props.value]);
 
   useEffect(() => {
     if (props.isEdit) {
@@ -38,7 +37,7 @@ const Input: React.FC<InputProps> = (props) => {
     if (props.buttonClassName === undefined) {
       setIsEditing(true);
     }
-  }, [props.isEdit, props.saveEditing]);
+  }, [props.isEdit, props.saveEditing, tempValue]);
 
   const toggleEdit = () => {
     if (isEditing) {
@@ -47,7 +46,7 @@ const Input: React.FC<InputProps> = (props) => {
     setIsEditing(!isEditing);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newValue = e.target.value;
     if (props.controlled && props.onChange) {
       props.onChange(e); // Управляемый режим, используем props.onChange
@@ -69,23 +68,25 @@ const Input: React.FC<InputProps> = (props) => {
           {isEditing ? 'Отменить' : 'Изменить'}
         </Button>
       )}
-      {props.error && (
-        <p className={styles.error}>Поле обязательно для заполнения</p>
-      )}
-      <input
+      <select
         className={
-          isEditing ? styles.input : `${styles.input} ${styles.disabled}`
+          isEditing
+            ? styles.selectStatus
+            : `${styles.selectStatus} ${styles.selected}`
         }
-        type={props.type}
-        placeholder={props.placeholder}
-        value={props.controlled ? props.value : tempValue} // Выбор значения по режиму
+        id={props.id}
+        value={tempValue}
         onChange={handleChange}
-        onBlur={props.onBlur}
-        onKeyDown={props.onKeyDown}
         disabled={!isEditing}
-      />
+      >
+        <option value="NEW">Новый</option>
+        <option value="IN_PROGRESS">В работе</option>
+        <option value="ALMOST_FINISHED">Почти завершен</option>
+        <option value="SUCCESSFUL">Успешный</option>
+        <option value="FAILED">Провал</option>
+      </select>
     </div>
   );
 };
 
-export default Input;
+export default Dropdown;
