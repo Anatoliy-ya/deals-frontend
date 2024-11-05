@@ -19,7 +19,6 @@ const initialState: DealState = {
 
 // Async thunks для API-запросов
 export const getDeals = createAsyncThunk('deals/getDeals', async () => {
-  console.log('getDeals', await fetchDeals());
   return await fetchDeals();
 });
 
@@ -60,7 +59,6 @@ export const editDeal = createAsyncThunk(
       fullName: string;
     };
   }) => {
-    console.log('editDeal', id, deal);
     return await updateDeal(id, deal);
   }
 );
@@ -90,7 +88,11 @@ export const getCommentsByDealId = createAsyncThunk(
 const dealSlice = createSlice({
   name: 'deals',
   initialState,
-  reducers: {},
+  reducers: {
+    clearCurrentDeal: (state) => {
+      state.currentDeal = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDeals.pending, (state) => {

@@ -4,7 +4,6 @@ import DealItem from '../DealItem/DealItem';
 
 interface DealTableProps {
   deals: Deal[];
-  loading: boolean;
 }
 
 const DealTable: React.FC<DealTableProps> = (props) => {

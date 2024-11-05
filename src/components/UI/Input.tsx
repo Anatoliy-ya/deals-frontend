@@ -1,6 +1,7 @@
+import styles from './Input.module.scss';
 import { useEffect, useState } from 'react';
 import Button from './Button';
-import styles from './Input.module.scss';
+import MaskedInput from 'react-text-mask';
 
 interface InputProps {
   id: string;
@@ -25,12 +26,33 @@ interface InputProps {
 const Input: React.FC<InputProps> = (props) => {
   const [isEditing, setIsEditing] = useState(false);
   const [tempValue, setTempValue] = useState(props.value);
+  const [isEmpty, setIsEmpty] = useState(false);
   const classInput = `${styles.containerInput} ${props.className}`;
+  const maskInput = [
+    '+',
+    '7',
+    '(',
+    /[1-9]/,
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+  ];
 
   useEffect(() => {
     if (props.isEdit) {
       setIsEditing(false);
       setTempValue(props.value);
+      setIsEmpty(props.value.toString().trim() === '');
     }
     if (props.saveEditing) {
       setIsEditing(false);
@@ -49,6 +71,7 @@ const Input: React.FC<InputProps> = (props) => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    setIsEmpty(newValue.trim() === '');
     if (props.controlled && props.onChange) {
       props.onChange(e); // Управляемый режим, используем props.onChange
     } else {
@@ -69,21 +92,37 @@ const Input: React.FC<InputProps> = (props) => {
           {isEditing ? 'Отменить' : 'Изменить'}
         </Button>
       )}
-      {props.error && (
+      {isEmpty && (
         <p className={styles.error}>Поле обязательно для заполнения</p>
       )}
-      <input
-        className={
-          isEditing ? styles.input : `${styles.input} ${styles.disabled}`
-        }
-        type={props.type}
-        placeholder={props.placeholder}
-        value={props.controlled ? props.value : tempValue} // Выбор значения по режиму
-        onChange={handleChange}
-        onBlur={props.onBlur}
-        onKeyDown={props.onKeyDown}
-        disabled={!isEditing}
-      />
+      {props.id === 'phone' ? (
+        <MaskedInput
+          mask={maskInput}
+          className={
+            isEditing ? styles.input : `${styles.input} ${styles.disabled}`
+          }
+          id={props.id}
+          placeholder={props.placeholder}
+          value={props.controlled ? props.value : tempValue}
+          onChange={handleChange}
+          onBlur={props.onBlur}
+          onKeyDown={props.onKeyDown}
+          disabled={!isEditing}
+        />
+      ) : (
+        <input
+          className={
+            isEditing ? styles.input : `${styles.input} ${styles.disabled}`
+          }
+          type={props.type}
+          placeholder={props.placeholder}
+          value={props.controlled ? props.value : tempValue} // Выбор значения по режиму
+          onChange={handleChange}
+          onBlur={props.onBlur}
+          onKeyDown={props.onKeyDown}
+          disabled={!isEditing}
+        />
+      )}
     </div>
   );
 };

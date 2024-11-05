@@ -22,9 +22,12 @@ const DealPage: React.FC = () => {
   const [isDirty, setIsDirty] = useState<boolean>(false);
 
   useEffect(() => {
-    if (selectedId !== null && (!deal || deal.id !== selectedId)) {
+    if (selectedId !== null && deal === null) {
       dispatch(getDealById(selectedId));
     }
+    return () => {
+      dispatch({ type: 'deals/clearCurrentDeal' });
+    };
   }, [selectedId]);
 
   useEffect(() => {
@@ -51,11 +54,12 @@ const DealPage: React.FC = () => {
   const handleSave = async () => {
     if (editedDeal !== null && selectedId) {
       const edDeal = prepareDealForSave(editedDeal);
-      dispatch(editDeal({ id: selectedId, deal: edDeal }));
+      await dispatch(editDeal({ id: selectedId, deal: edDeal }));
+
       setIsDirty(false);
       setSaveEditing(true);
       setTimeout(() => setSaveEditing(false), 0);
-      await dispatch(getDealById(selectedId));
+      dispatch(getDealById(selectedId));
     }
   };
 
@@ -78,7 +82,7 @@ const DealPage: React.FC = () => {
         {deal.title}
       </label>
       <div className={styles.containerStatus}>
-        <StatusProgress status={deal.status} />
+        <StatusProgress status={editedDeal ? editedDeal.status : deal.status} />
       </div>
       <div className={styles.containerData}>
         <div className={styles.modifyDeal}>

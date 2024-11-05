@@ -21,10 +21,14 @@
 }
 
 .progressLine {
-  width: 25%;
   height: 20px;
   background-color: #d29a00;
   position: absolute;
+
+  &.default {
+    width: 25%;
+    background-color: #d29a00;
+  }
 
   &.inProgress {
     width: 50%;

@@ -48,10 +48,12 @@ const CommentsDeal: React.FC<CommentDealProps> = (props) => {
           controlled={true}
         />
       </div>
-      <div className={styles.containerCommentItem}>
-        {sortComments.map((c: Comment) => (
-          <CommentItem key={c.id} id={c.id} comment={c.content} />
-        ))}
+      <div className={styles.containerCommentList}>
+        <div className={styles.commentList}>
+          {sortComments.map((c: Comment) => (
+            <CommentItem key={c.id} id={c.id} comment={c.content} />
+          ))}
+        </div>
       </div>
     </div>
   );
