@@ -6,6 +6,6 @@ const selectDeals = (state: RootState) => state.deals;
 
 export const selectCompletedDeals = createSelector([selectDeals], (deals) =>
   deals.deals.filter(
-    (deal) => deal.status === 'Успешно' || deal.status === 'Провал'
+    (deal) => deal.status === 'SUCCESSFUL' || deal.status === 'FAILED'
   )
 );
